@@ -1340,8 +1340,9 @@
                     next = null;
                 for (const it of SCHEDULE) {
                     const s = statusOf(it, now);
-                    if (s === "current" && !it.allday) cur = it; // laufender getakteter Punkt
-                    if (s === "upcoming" && it.ts && !next) next = it; // nächster getakteter Punkt
+                    if (s === "current" && !it.allday) cur = it;
+                    if (s === "upcoming" && it.ts && !next &&
+                        stripTime(DAYS[it.day]).getTime() === todayMid) next = it;
                 }
                 // an ruhigen Tagen: heutige Tagesaufgaben als "aktuell"
                 const todayTasks = SCHEDULE.filter(
