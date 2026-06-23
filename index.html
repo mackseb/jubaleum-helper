@@ -582,7 +582,23 @@
                 color: var(--muted);
                 font-size: 14px;
                 text-align: center;
-                margin: 18px 0 14px;
+                margin: 18px 0 8px;
+            }
+            .guest-counter {
+                text-align: center;
+                margin: 0 0 14px;
+            }
+            .gcbadge {
+                display: inline-block;
+                background: var(--card);
+                border: 1px solid var(--line);
+                border-radius: 999px;
+                padding: 4px 14px;
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .gcbadge strong {
+                color: var(--ink);
             }
             .tsearch-wrap {
                 position: relative;
@@ -961,6 +977,7 @@
                     Sitzordnung für den Aufbau · 10 Tische im Oval, Brautpaar in
                     der Mitte, Band links.
                 </p>
+                <p class="guest-counter" id="guestTotal"></p>
                 <div class="tsearch-wrap">
                     <input
                         type="search"
@@ -2339,6 +2356,26 @@
             }
 
             function buildTablesList() {
+                const totalEl = document.getElementById("guestTotal");
+                if (totalEl) {
+                    const seated = TABLES.reduce(
+                        (s, t) =>
+                            s + t.guests.filter((g) => g && g !== "?").length,
+                        0,
+                    );
+                    const open = TABLES.reduce(
+                        (s, t) => s + t.guests.filter((g) => g === "?").length,
+                        0,
+                    );
+                    totalEl.innerHTML =
+                        '<span class="gcbadge"><strong>' +
+                        seated +
+                        " Gäste</strong> an 10 Tischen" +
+                        (open
+                            ? " · <em>" + open + " Plätze offen</em>"
+                            : "") +
+                        "</span>";
+                }
                 let html = "";
                 allTables().forEach((t) => {
                     const real = t.guests.filter((g) => g && g !== "?").length;
