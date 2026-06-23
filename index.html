@@ -238,35 +238,36 @@
 
 // Gruppen (Farbe frei wählbar). "key" wird unten bei Personen genutzt.
 const GROUPS = {
-  brautpaar:  { name: "Brautpaar",            color: "#b08968" },
-  trauzeugen: { name: "Trauzeugen & Familie", color: "#9c6f44" },
-  kirche:     { name: "Kirche",               color: "#6e87a8" },
-  musik:      { name: "Musik & Chor",         color: "#8a9b6e" },
-  programm:   { name: "Programm",             color: "#c98da3" },
-  foto:       { name: "Foto & Film",          color: "#7a6f9b" },
-  location:   { name: "Schloss & Catering",   color: "#c08552" },
+  brautpaar:  { name: "Brautpaar",          color: "#b08968" },
+  trauzeugen: { name: "Trauzeugen",         color: "#9c6f44" },
+  eltern:     { name: "Eltern",             color: "#cc7e6b" },
+  kirche:     { name: "Kirche",             color: "#6e87a8" },
+  musik:      { name: "Musik & Chor",       color: "#8a9b6e" },
+  programm:   { name: "Programm",           color: "#c98da3" },
+  foto:       { name: "Foto & Film",        color: "#7a6f9b" },
+  location:   { name: "Schloss & Catering", color: "#c08552" },
 };
 
-// Personen: name + Gruppe
+// Personen: name + Gruppe(n). Mehrere Gruppen möglich: groups: ["a","b"]
 const PEOPLE = [
-  { name: "Julia",        group: "brautpaar" },
-  { name: "Sebastian",    group: "brautpaar" },
-  { name: "Alexander",    group: "trauzeugen" },
-  { name: "Renate",       group: "trauzeugen" },
-  { name: "Hans-Jürgen",  group: "trauzeugen" },
-  { name: "Michaela",     group: "kirche" },
-  { name: "Moni",         group: "kirche" },
-  { name: "Mädchenchor",  group: "musik" },
-  { name: "Crazy Girls",  group: "musik" },
-  { name: "Eva",          group: "musik" },
-  { name: "Orgel",        group: "musik" },
-  { name: "Verena",       group: "programm" },
-  { name: "Lorna",        group: "programm" },
-  { name: "Lukas",        group: "programm" },
-  { name: "Marcel",       group: "foto" },
-  { name: "Stephan",      group: "foto" },
-  { name: "Schloss",      group: "location" },
-  { name: "Fasan",        group: "location" },
+  { name: "Julia",        groups: ["brautpaar"] },
+  { name: "Sebastian",    groups: ["brautpaar"] },
+  { name: "Alexander",    groups: ["trauzeugen"] },
+  { name: "Lorna",        groups: ["trauzeugen", "programm"] },
+  { name: "Verena",       groups: ["trauzeugen", "programm"] },
+  { name: "Renate",       groups: ["eltern"] },
+  { name: "Hans-Jürgen",  groups: ["eltern"] },
+  { name: "Michaela",     groups: ["kirche"] },
+  { name: "Moni",         groups: ["kirche"] },
+  { name: "Mädchenchor",  groups: ["musik"] },
+  { name: "Crazy Girls",  groups: ["musik"] },
+  { name: "Eva",          groups: ["musik"] },
+  { name: "Orgel",        groups: ["musik"] },
+  { name: "Lukas",        groups: ["programm"] },
+  { name: "Marcel",       groups: ["foto"] },
+  { name: "Stephan",      groups: ["foto"] },
+  { name: "Schloss",      groups: ["location"] },
+  { name: "Fasan",        groups: ["location"] },
 ];
 
 // Abschnitte (Reihenfolge = Anzeige-Reihenfolge)
@@ -416,7 +417,7 @@ const SEC2DAY = { di:"di", mi:"mi", do:"do", fr:"fr", vorb:"sa", kirche:"sa", em
 const ALLDAY = new Set(["di","mi","do","fr","so"]);
 
 const groupOf = {};
-PEOPLE.forEach(p => groupOf[p.name] = p.group);
+PEOPLE.forEach(p => groupOf[p.name] = p.groups);
 
 // "Jetzt" — optional per URL ?t=2026-06-27T14:10 zum Vorschau-Testen
 const tParam = new URLSearchParams(location.search).get("t");
@@ -501,21 +502,21 @@ function renderChips(){
     groupChips.appendChild(chip(g.name, filter.type==="group"&&filter.value===key, ()=>setFilter("group",key), g.color)));
   groupChips.appendChild(chip("❓ Noch offen", filter.type==="open", ()=>setFilter("open",null)));
   PEOPLE.forEach(p =>
-    personChips.appendChild(chip(p.name, filter.type==="person"&&filter.value===p.name, ()=>setFilter("person",p.name), GROUPS[p.group].color)));
+    personChips.appendChild(chip(p.name, filter.type==="person"&&filter.value===p.name, ()=>setFilter("person",p.name), GROUPS[p.groups[0]].color)));
 }
 
 function matches(it){
   if (filter.type === "all") return true;
   if (filter.type === "open") return !!it.open;
   if (filter.type === "person") return it.who.includes(filter.value);
-  if (filter.type === "group") return it.who.some(n => groupOf[n] === filter.value);
+  if (filter.type === "group") return it.who.some(n => (groupOf[n] || []).includes(filter.value));
   return true;
 }
 
 function tagHtml(name){
   if (name === "?") return '<span class="tag open">offen</span>';
-  const g = GROUPS[groupOf[name]];
-  if (g) return '<span class="tag"><span class="dot" style="background:'+g.color+'"></span>'+name+'</span>';
+  const gs = groupOf[name];
+  if (gs && gs.length) return '<span class="tag"><span class="dot" style="background:'+GROUPS[gs[0]].color+'"></span>'+name+'</span>';
   return '<span class="tag neutral">'+name+'</span>';
 }
 
