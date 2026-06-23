@@ -267,17 +267,24 @@
                 transition: border-color 0.15s;
                 white-space: nowrap;
             }
-            .filter-toggle:hover { border-color: var(--accent); }
+            .filter-toggle:hover {
+                border-color: var(--accent);
+            }
             .filter-chevron {
                 display: inline-block;
                 transition: transform 0.2s;
             }
-            .filterbar.open .filter-chevron { transform: rotate(180deg); }
+            .filterbar.open .filter-chevron {
+                transform: rotate(180deg);
+            }
             .filterbar-body {
                 max-height: 0;
                 overflow: hidden;
                 opacity: 0;
-                transition: max-height 0.3s ease, opacity 0.2s ease, padding-top 0.2s ease;
+                transition:
+                    max-height 0.3s ease,
+                    opacity 0.2s ease,
+                    padding-top 0.2s ease;
             }
             .filterbar.open .filterbar-body {
                 max-height: 600px;
@@ -553,8 +560,13 @@
 
             <div class="filterbar" id="filterbar">
                 <div class="filterbar-head" id="filterbarHead">
-                    <span class="filter-summary">Filter: <b id="filterSummary">Alle</b></span>
-                    <button class="filter-toggle" aria-label="Filter ein-/ausklappen">
+                    <span class="filter-summary"
+                        >Filter: <b id="filterSummary">Alle</b></span
+                    >
+                    <button
+                        class="filter-toggle"
+                        aria-label="Filter ein-/ausklappen"
+                    >
                         Filtern <span class="filter-chevron">▾</span>
                     </button>
                 </div>
@@ -659,6 +671,7 @@
                 {
                     sec: "di",
                     title: "Treffen mit Fotograf",
+                    time: "11:00",
                     who: ["Julia", "Sebastian"],
                 },
 
@@ -1197,9 +1210,13 @@
             let filter = { type: "all", value: null };
             let hidePast = false;
 
-            document.getElementById("filterbarHead").addEventListener("click", () => {
-                document.getElementById("filterbar").classList.toggle("open");
-            });
+            document
+                .getElementById("filterbarHead")
+                .addEventListener("click", () => {
+                    document
+                        .getElementById("filterbar")
+                        .classList.toggle("open");
+                });
 
             function filterLabel() {
                 if (filter.type === "all") return "Alle";
@@ -1366,7 +1383,8 @@
                 const now = getNow();
                 renderChips();
                 renderLive(now);
-                document.getElementById("filterSummary").textContent = filterLabel();
+                document.getElementById("filterSummary").textContent =
+                    filterLabel();
                 scheduleEl.innerHTML = "";
 
                 let total = 0;
