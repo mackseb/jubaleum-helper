@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#faf8f5" />
+<title>Helfer-Ablaufplan · J & S</title>
+<style>
+  :root {
+    --bg: #faf8f5;
+    --card: #ffffff;
+    --ink: #2d2a26;
+    --muted: #8c857c;
+    --line: #ece7df;
+    --accent: #b08968;
+    --accent-deep: #8a6443;
+    --accent-soft: #f4ece3;
+    --done: #b9b2a7;
+    --now: #b08968;
+    --shadow: 0 1px 2px rgba(45,42,38,.04), 0 6px 22px rgba(45,42,38,.06);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 70px;
+  }
+
+  .serif { font-family: "Georgia", "Times New Roman", serif; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 18px; }
+
+  /* ---------- Header ---------- */
+  header { text-align: center; padding: 40px 18px 18px; }
+  .monogram {
+    font-family: "Georgia", serif;
+    font-size: 13px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .monogram::before, .monogram::after {
+    content: ""; display: inline-block; width: 26px; height: 1px;
+    background: var(--accent); vertical-align: middle; margin: 0 12px; opacity: .5;
+  }
+  h1 { font-family: "Georgia", serif; font-weight: 400; font-size: 30px; margin: 0 0 6px; }
+  .subtitle { color: var(--muted); font-size: 15px; margin: 0; }
+  .theme {
+    margin: 12px 0 0; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent-deep);
+  }
+  .theme::before { content: "✶ "; opacity: .6; }
+  .theme::after { content: " ✶"; opacity: .6; }
+
+  /* ---------- Live banner ---------- */
+  .live {
+    background: linear-gradient(135deg, #fff 0%, var(--accent-soft) 100%);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    margin: 18px 0 6px;
+  }
+  .live .head {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--accent-deep); font-weight: 700; margin-bottom: 10px;
+  }
+  .pulse {
+    width: 9px; height: 9px; border-radius: 50%; background: var(--now);
+    box-shadow: 0 0 0 0 rgba(176,137,104,.55);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(176,137,104,.5); }
+    70% { box-shadow: 0 0 0 9px rgba(176,137,104,0); }
+    100% { box-shadow: 0 0 0 0 rgba(176,137,104,0); }
+  }
+  .live .countdown { font-family:"Georgia",serif; font-size: 19px; margin: 0 0 12px; }
+  .live .nowrow, .live .nextrow { display:flex; gap:10px; font-size:14px; margin-top:6px; }
+  .live .lbl { flex:0 0 86px; color: var(--muted); }
+  .live .val { font-weight: 600; }
+  .live .val .t { color: var(--accent-deep); font-variant-numeric: tabular-nums; }
+
+  /* ---------- Filter bar ---------- */
+  .filterbar {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(250,248,245,.93);
+    backdrop-filter: saturate(180%) blur(8px);
+    -webkit-backdrop-filter: saturate(180%) blur(8px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 0 12px; margin: 14px 0 2px;
+  }
+  .filter-label {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted); margin: 0 0 8px; font-weight: 600;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    border: 1px solid var(--line); background: var(--card);
+    color: var(--ink); font-size: 14px; font-family: inherit;
+    padding: 7px 13px; border-radius: 999px; cursor: pointer;
+    transition: all .15s ease; white-space: nowrap;
+  }
+  .chip:hover { border-color: var(--accent); }
+  .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip.active .dot { box-shadow: 0 0 0 1.5px #fff; }
+  .chip.group { font-weight: 600; }
+  .chip .dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    margin-right: 6px; vertical-align: middle;
+  }
+  .group-row { margin-bottom: 12px; }
+
+  .toolbar { display:flex; align-items:center; justify-content:space-between; margin: 14px 2px 2px; gap: 10px; flex-wrap: wrap;}
+  .count { color: var(--muted); font-size: 13px; }
+  .toggle { display:inline-flex; align-items:center; gap:8px; font-size:13px; color: var(--muted); cursor:pointer; user-select:none;}
+  .toggle input { display:none; }
+  .switch { width: 36px; height: 20px; border-radius: 999px; background: var(--line); position: relative; transition: background .15s; flex: 0 0 auto;}
+  .switch::after { content:""; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.2); transition: left .15s;}
+  .toggle input:checked + .switch { background: var(--accent); }
+  .toggle input:checked + .switch::after { left: 18px; }
+
+  /* ---------- Sections & timeline ---------- */
+  .section-head { margin: 26px 0 4px; display:flex; align-items:baseline; gap:10px; }
+  .section-head h2 { font-family:"Georgia",serif; font-weight:400; font-size:20px; margin:0; }
+  .section-head .sub { font-size: 13px; color: var(--muted); }
+  .section-head.today h2::after {
+    content: "heute"; font-family: inherit; font-size:11px; letter-spacing:1px; text-transform:uppercase;
+    background: var(--accent); color:#fff; padding:2px 8px; border-radius:999px; margin-left:10px; vertical-align: middle;
+  }
+
+  .item { display: flex; align-items: stretch; }
+  .item .time {
+    flex: 0 0 46px; text-align: right; font-variant-numeric: tabular-nums;
+    font-weight: 600; font-size: 14px; padding-top: 15px; color: var(--ink);
+  }
+  .item .dotcol { flex: 0 0 26px; position: relative; display:flex; justify-content:center; }
+  .item .dotcol::before { content:""; position:absolute; top:0; bottom:0; width:2px; background: var(--line); }
+  .item:first-child .dotcol::before { top: 16px; }
+  .item:last-child .dotcol::before { bottom: calc(100% - 16px); }
+  .dot2 {
+    position: relative; margin-top: 15px; width: 11px; height: 11px; border-radius: 50%;
+    background: #d8d1c6; border: 2px solid var(--bg); z-index: 1; flex: 0 0 auto;
+  }
+  .item .body { flex: 1 1 auto; min-width: 0; padding: 12px 0 12px 6px; border-bottom: 1px solid var(--line); }
+  .item:last-child .body { border-bottom: none; }
+  .item .body h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+  .item .details { color: #56514a; font-size: 13.5px; margin: 0 0 9px; white-space: pre-line; }
+  .who { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag {
+    font-size: 12px; padding: 3px 9px; border-radius: 999px;
+    background: var(--accent-soft); color: #7a5c41; display: inline-flex; align-items: center;
+  }
+  .tag .dot { width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }
+  .tag.neutral { background: #f0eee9; color: var(--muted); }
+  .tag.open { background: transparent; color: var(--muted); border: 1px dashed #cfc7ba; }
+
+  /* status */
+  .item.done .body { opacity: .55; }
+  .item.done h3 { text-decoration: line-through; text-decoration-color: rgba(45,42,38,.25); }
+  .item.done .dot2 { background: var(--done); border-color: var(--bg); }
+  .item.done .time { color: var(--muted); }
+
+  .item.current .body {
+    background: var(--accent-soft); border-bottom-color: transparent;
+    border-radius: 12px; padding: 12px 14px; margin: 2px 0 2px;
+    box-shadow: var(--shadow);
+  }
+  .item.current .dot2 {
+    background: var(--now); border-color: var(--bg); width: 13px; height: 13px;
+    box-shadow: 0 0 0 0 rgba(176,137,104,.55); animation: pulse 2s infinite;
+  }
+  .item.current h3::after {
+    content: "JETZT"; font-size: 10px; letter-spacing: 1px; font-weight: 700;
+    background: var(--now); color:#fff; padding: 2px 7px; border-radius: 999px; margin-left: 8px; vertical-align: middle;
+  }
+
+  .empty { text-align: center; color: var(--muted); padding: 50px 20px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 34px 18px 0; line-height: 1.7; }
+  footer .orn { color: var(--accent); opacity:.6; font-size:16px; margin-bottom: 8px; }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 25px; }
+    .item .time { flex-basis: 42px; font-size: 13px; }
+    .item .dotcol { flex-basis: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="monogram">J &amp; S</div>
+  <h1>Helfer-Ablaufplan</h1>
+  <p class="subtitle">Samstag, 27. Juni 2026</p>
+  <p class="theme">Unsere Weltausstellung</p>
+</header>
+
+<div class="wrap">
+
+  <div class="live" id="live"></div>
+
+  <div class="filterbar">
+    <p class="filter-label">Nach Gruppe</p>
+    <div class="chips group-row" id="groupChips"></div>
+    <p class="filter-label">Nach Person</p>
+    <div class="chips" id="personChips"></div>
+  </div>
+
+  <div class="toolbar">
+    <span class="count" id="count"></span>
+    <label class="toggle">
+      <input type="checkbox" id="hidePast" />
+      <span class="switch"></span>
+      Vergangenes ausblenden
+    </label>
+  </div>
+
+  <div id="schedule"></div>
+  <div class="empty" id="empty" style="display:none">Keine Aufgaben für diese Auswahl. 💐</div>
+
+  <footer>
+    <div class="orn">❦</div>
+    Fragen? Meldet euch jederzeit bei <strong>Julia &amp; Sebastian</strong>.<br />
+    Danke, dass ihr unsere Weltausstellung mit uns möglich macht! ♥
+  </footer>
+</div>
+
+<script>
+/* =====================================================================
+   DATEN — hier alles bearbeiten, keine Programmierkenntnisse nötig.
+   ===================================================================== */
+
+// Gruppen (Farbe frei wählbar). "key" wird unten bei Personen genutzt.
+const GROUPS = {
+  brautpaar:  { name: "Brautpaar",            color: "#b08968" },
+  trauzeugen: { name: "Trauzeugen & Familie", color: "#9c6f44" },
+  kirche:     { name: "Kirche",               color: "#6e87a8" },
+  musik:      { name: "Musik & Chor",         color: "#8a9b6e" },
+  programm:   { name: "Programm",             color: "#c98da3" },
+  foto:       { name: "Foto & Film",          color: "#7a6f9b" },
+  location:   { name: "Schloss & Catering",   color: "#c08552" },
+};
+
+// Personen: name + Gruppe
+const PEOPLE = [
+  { name: "Julia",        group: "brautpaar" },
+  { name: "Sebastian",    group: "brautpaar" },
+  { name: "Alexander",    group: "trauzeugen" },
+  { name: "Renate",       group: "trauzeugen" },
+  { name: "Hans-Jürgen",  group: "trauzeugen" },
+  { name: "Michaela",     group: "kirche" },
+  { name: "Moni",         group: "kirche" },
+  { name: "Mädchenchor",  group: "musik" },
+  { name: "Crazy Girls",  group: "musik" },
+  { name: "Eva",          group: "musik" },
+  { name: "Orgel",        group: "musik" },
+  { name: "Verena",       group: "programm" },
+  { name: "Lorna",        group: "programm" },
+  { name: "Lukas",        group: "programm" },
+  { name: "Marcel",       group: "foto" },
+  { name: "Stephan",      group: "foto" },
+  { name: "Schloss",      group: "location" },
+  { name: "Fasan",        group: "location" },
+];
+
+// Abschnitte (Reihenfolge = Anzeige-Reihenfolge)
+const SECTIONS = [
+  { key: "di",      title: "Dienstag",                 sub: "23. Juni" },
+  { key: "mi",      title: "Mittwoch",                 sub: "24. Juni" },
+  { key: "do",      title: "Donnerstag",               sub: "25. Juni" },
+  { key: "fr",      title: "Freitag",                  sub: "26. Juni" },
+  { key: "vorb",    title: "Samstag · Vorbereitung",   sub: "27. Juni" },
+  { key: "kirche",  title: "Kirche",                   sub: "ab 14:00 Uhr" },
+  { key: "empfang", title: "Empfang & Übergang",       sub: "ab 15:00 Uhr" },
+  { key: "feier",   title: "Feier im Schloss",         sub: "ab 17:00 Uhr" },
+  { key: "so",      title: "Sonntag · Abbau",          sub: "28. Juni" },
+];
+
+// Ablaufplan. who = Namen aus PEOPLE (exakt gleich), "?" = noch offen.
+// open:true -> taucht im Filter "Noch offen" auf.
+const SCHEDULE = [
+  // ---- Vorwoche ----
+  { sec:"di", title:"Treffen mit Fotograf", who:["Julia","Sebastian"] },
+
+  { sec:"mi", title:"Getränke holen & zum Schloss bringen", who:["Hans-Jürgen"],
+    details:"Getränke holen und ins Schloss bringen." },
+  { sec:"mi", title:"Sachen zur Kirche bringen", who:["?"], open:true,
+    details:"Deko und Kuchenboxen zur Kirche bringen." },
+
+  { sec:"do", title:"Sachen zum Schloss bringen", who:["?"], open:true },
+
+  { sec:"fr", title:"Voraufbau Schloss", who:["?"], open:true },
+  { sec:"fr", title:"Bierbänke & Aufbau stehen lassen", who:["Jugend & Kinder"],
+    details:"Jugend/Kinder lassen Bierbänke und Aufbau stehen — nach der Vor-Veranstaltung in der Kirche." },
+
+  // ---- Samstag Vorbereitung ----
+  { sec:"vorb", time:"7:00",  title:"Aufstehen", who:["Julia","Sebastian"] },
+  { sec:"vorb", time:"9:00",  title:"Aufbau Schloss", who:["?"], open:true,
+    details:"Klären, wer mithelfen kann." },
+  { sec:"vorb", time:"10:00", title:"Haare-Styling beim Friseur Trentini", who:["Sebastian"] },
+  { sec:"vorb", time:"10:00", title:"Stylist · Frisur & Schminken", who:["Julia"] },
+  { sec:"vorb", time:"10:30", title:"Torte abholen", who:["Renate","Hans-Jürgen"],
+    details:"Location herausfinden und Nummern austauschen." },
+  { sec:"vorb", time:"11:00", title:"Anzug anziehen", who:["Sebastian"] },
+  { sec:"vorb", time:"11:00", title:"Kleid anziehen", who:["Julia"] },
+  { sec:"vorb", time:"13:15", title:"Limousine vom Parkplatz holen", who:["Alexander"],
+    details:"Location des Parkplatzes schicken." },
+  { sec:"vorb", time:"13:35", title:"Abfahrt zur Kirche", who:["Julia","Sebastian","Alexander"] },
+  { sec:"vorb", time:"13:45", title:"Ankunft Kirche", who:["Julia","Sebastian","Alexander"] },
+
+  // ---- Kirche ----
+  { sec:"kirche", title:"Getränke kaltstellen", who:["Moni"] },
+  { sec:"kirche", title:"Kuchen entgegennehmen", who:["?"], open:true },
+  { sec:"kirche", title:"Aufbau in der Kirche", who:["?"], open:true,
+    details:"Schleifen für die Bänke, Blumenvase auf den Altar, Dekoration der Stühle vorne." },
+  { sec:"kirche", time:"13:55", title:"Glockengeläut", who:["?"], open:true },
+  { sec:"kirche", time:"13:55", title:"Orgelvorspiel", who:["Orgel"],
+    details:"Widor: Toccata in F-Dur." },
+  { sec:"kirche", time:"14:00", title:"Feierlicher Einzug in die Kirche", who:["Julia","Sebastian"],
+    details:"Blumen in die Vase." },
+  { sec:"kirche", title:"Begrüßung", who:["Michaela"] },
+  { sec:"kirche", title:"Votum", who:["Michaela"] },
+  { sec:"kirche", title:"Gemeindelied", who:[],
+    details:"„Geh aus mein Herz und suche Freud“ — Str. 1, 3 & 8." },
+  { sec:"kirche", title:"Psalm", who:["Michaela"] },
+  { sec:"kirche", title:"Eingangsgebet", who:["Michaela"] },
+  { sec:"kirche", title:"Schriftlesung", who:["Michaela"] },
+  { sec:"kirche", title:"Lied", who:["Eva","Crazy Girls"],
+    details:"„Somewhere over the rainbow“ — Crazy Girls singen Intro & Bridge, Gemeinde singt den Refrain." },
+  { sec:"kirche", title:"Ansprache zum Trauspruch", who:["Michaela"] },
+  { sec:"kirche", title:"Vortragslied 1", who:["Mädchenchor"],
+    details:"„May the road rise“." },
+  { sec:"kirche", title:"Ringe übergeben", who:["Alexander"] },
+  { sec:"kirche", title:"Traufragen", who:["Michaela"],
+    details:"Ringe bereithalten (Ringe & Kuss hier?)." },
+  { sec:"kirche", title:"Trausegen", who:["Michaela"] },
+  { sec:"kirche", title:"Vortragslied 2", who:["Mädchenchor"],
+    details:"„Ain’t no mountain high enough“." },
+  { sec:"kirche", title:"Fürbitten", who:["Mädchenchor","Verena","Lorna","Alexander","Hans-Jürgen"],
+    details:"Vortrag Mädchenchor: eine Strophe + Refrain von „Das wünsch ich dir“\nFürbitte 1 (Verena?)\nMädchenchor: Refrain (ggf. verkürzt)\nFürbitte 2 (Hans-Jürgen?)\nMädchenchor: Refrain (ggf. verkürzt)\nFürbitte 3 (Lorna?)\nMädchenchor: Refrain (ggf. verkürzt)\nFürbitte 4 (Alex?)\nMädchenchor: eine Strophe + Refrain von „Das wünsch ich dir“" },
+  { sec:"kirche", title:"Vater unser", who:["Michaela"] },
+  { sec:"kirche", title:"Abkündigungen", who:["Michaela","Moni"],
+    details:"Kollekte für die Kirchenmusik der Lutherkirche.\nDann ggf. Moni: Ablauf des Empfangs, Foto, Dank an alle Helfer und Hinweis, ausserhalb der Kirche keine Blumen zu streuen!" },
+  { sec:"kirche", title:"Segen", who:["Michaela"] },
+  { sec:"kirche", title:"Lied „Oh Happy Day“", who:[] },
+  { sec:"kirche", title:"Vortrag · Überraschung", who:["Mädchenchor"],
+    details:"Zum Schluss steigen alle mit ein." },
+  { sec:"kirche", title:"Auszug", who:["Orgel"],
+    details:"Orgelmusik: Hans-André Stamm „Celtic Rhapsody“ oder Händel „Arrival of the Queen of Sheba“." },
+  { sec:"kirche", time:"14:45", title:"Gruppenfoto", who:["Marcel","Stephan"],
+    details:"Mit allen — Gruppenfoto wird noch in der Kirche gemacht." },
+
+  // ---- Empfang & Übergang ----
+  { sec:"empfang", time:"15:00", title:"Empfang", who:[],
+    details:"Alle gehen nach draussen." },
+  { sec:"empfang", time:"16:45", title:"Torten umlagern", who:["?"], open:true,
+    details:"Torten & Essen, das Leute dalassen wollen, in die vorbereiteten Boxen einpacken." },
+  { sec:"empfang", time:"16:50", title:"Abfahrt zum Schloss", who:["Julia","Sebastian","Alexander"] },
+  { sec:"empfang", time:"17:00", title:"Torten zum Schloss bringen", who:["?"], open:true },
+  { sec:"empfang", time:"17:30", title:"Abbau Kirche", who:["?"], open:true },
+
+  // ---- Feier im Schloss ----
+  { sec:"feier", time:"17:00", title:"Einlass & Schloss entdecken", who:["Julia","Sebastian","Alexander"],
+    details:"Interaktive Sachen." },
+  { sec:"feier", time:"17:05", title:"Limousine parken", who:["Alexander"],
+    details:"Abklären, wo das Auto hin kann." },
+  { sec:"feier", title:"Aperitif / Getränke", who:["Schloss"],
+    details:"Klären, ab wann ready und wo." },
+  { sec:"feier", time:"17:30", title:"Start der Veranstaltung", who:["Julia","Sebastian"],
+    details:"Offizielle Eröffnung unserer Weltausstellung, offizielle Ansprechpartner vorstellen." },
+  { sec:"feier", time:"17:35", title:"Rede", who:["Julia","Sebastian"],
+    details:"Rede vorbereiten." },
+  { sec:"feier", time:"18:00", title:"Abendessen", who:["Fasan"],
+    details:"Orientalisches Zelt." },
+  { sec:"feier", time:"18:45", title:"Programm 1", who:["Lukas","Lorna"] },
+  { sec:"feier", time:"19:30", title:"Pause", who:[] },
+  { sec:"feier", time:"19:45", title:"Tortenanschnitt", who:["Julia","Sebastian","Schloss"] },
+  { sec:"feier", time:"20:00", title:"Programm 2", who:["Lukas","Lorna"] },
+  { sec:"feier", time:"20:40", title:"Musik bereit machen für den Tanz", who:["?"], open:true },
+  { sec:"feier", time:"20:45", title:"Hochzeitstanz", who:["Julia","Sebastian"],
+    details:"Rumba." },
+  { sec:"feier", time:"20:50", title:"Kreistanz", who:["Julia"],
+    details:"Was, wie, wo." },
+  { sec:"feier", time:"21:00", title:"Live-Musik", who:[],
+    details:"Band Ingo — weicher Übergang möglich?" },
+  { sec:"feier", time:"22:00", title:"Lampion-Wanderung", who:[],
+    details:"Ende des offiziellen Teils." },
+  { sec:"feier", time:"22:30", title:"Einzug ins Schloss", who:[] },
+  { sec:"feier", time:"23:00", title:"Cocktails & Drinks servieren", who:["Schloss"] },
+  { sec:"feier", time:"23:30", title:"Party & Tanzen", who:[] },
+  { sec:"feier", time:"2:00",  title:"Ende der Veranstaltung 🥺", who:[] },
+  { sec:"feier", title:"Zusammenräumen", who:["?"], open:true,
+    details:"Kleinere Aufräumarbeiten." },
+
+  // ---- Sonntag ----
+  { sec:"so", title:"Abbau Schloss", who:["?"], open:true,
+    details:"Uhrzeit und Helfer werden noch festgelegt." },
+];
+
+/* =====================================================================
+   LOGIK — ab hier nichts ändern.
+   ===================================================================== */
+
+// Kalendertage (Monat 5 = Juni)
+const DAYS = {
+  di: new Date(2026,5,23), mi: new Date(2026,5,24), do: new Date(2026,5,25),
+  fr: new Date(2026,5,26), sa: new Date(2026,5,27), so: new Date(2026,5,28),
+};
+const SEC2DAY = { di:"di", mi:"mi", do:"do", fr:"fr", vorb:"sa", kirche:"sa", empfang:"sa", feier:"sa", so:"so" };
+const ALLDAY = new Set(["di","mi","do","fr","so"]);
+
+const groupOf = {};
+PEOPLE.forEach(p => groupOf[p.name] = p.group);
+
+// "Jetzt" — optional per URL ?t=2026-06-27T14:10 zum Vorschau-Testen
+const tParam = new URLSearchParams(location.search).get("t");
+function getNow() { return tParam ? new Date(tParam) : new Date(); }
+function stripTime(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function atTime(base, h, m){ const d = new Date(base); d.setHours(h, m, 0, 0); return d; }
+
+// Tag + Tageskennung ableiten, Zeitstempel berechnen
+SCHEDULE.forEach(it => { it.day = SEC2DAY[it.sec]; it.allday = ALLDAY.has(it.sec); });
+
+(function buildTimestamps(){
+  let prev = null;
+  SCHEDULE.forEach(it => {
+    if (it.allday) { it.ts = null; return; }
+    if (it.time) {
+      const [h,m] = it.time.split(":").map(Number);
+      let ts = atTime(DAYS[it.day], h, m);
+      if (prev && h < 6 && prev.getHours() >= 12) ts = new Date(ts.getTime() + 86400000);
+      it.ts = ts; prev = ts;
+    } else { it.ts = null; }
+  });
+  // Untimed (nicht-ganztägige) Punkte zwischen Ankern verteilen
+  const seq = SCHEDULE.filter(x => !x.allday);
+  let pend = [], prevA = null;
+  seq.forEach(it => {
+    if (it.ts) {
+      if (pend.length) {
+        if (prevA) {
+          const span = it.ts - prevA.ts;
+          pend.forEach((p,k) => p.ts = new Date(prevA.ts.getTime() + span*(k+1)/(pend.length+1)));
+        } else {
+          pend.forEach((p,k) => p.ts = new Date(it.ts.getTime() - (pend.length-k)*60000));
+        }
+        pend = [];
+      }
+      prevA = it;
+    } else pend.push(it);
+  });
+  if (pend.length && prevA) pend.forEach((p,k) => p.ts = new Date(prevA.ts.getTime() + (k+1)*60000));
+
+  // Endzeitpunkt je Punkt (für "läuft gerade")
+  const timed = seq.slice().sort((a,b)=> a.ts - b.ts);
+  timed.forEach((it,i) => it.endTs = timed[i+1] ? timed[i+1].ts : new Date(it.ts.getTime() + 30*60000));
+})();
+
+function statusOf(it, now){
+  if (it.allday){
+    const d = stripTime(DAYS[it.day]).getTime(), t = stripTime(now).getTime();
+    return d < t ? "done" : (d === t ? "current" : "upcoming");
+  }
+  if (now >= it.endTs) return "done";
+  if (now >= it.ts) return "current";
+  return "upcoming";
+}
+
+let filter = { type: "all", value: null };
+let hidePast = false;
+
+const groupChips  = document.getElementById("groupChips");
+const personChips = document.getElementById("personChips");
+const scheduleEl  = document.getElementById("schedule");
+const emptyEl     = document.getElementById("empty");
+const countEl     = document.getElementById("count");
+const liveEl      = document.getElementById("live");
+
+document.getElementById("hidePast").addEventListener("change", e => { hidePast = e.target.checked; render(); });
+
+function chip(label, active, onClick, color){
+  const b = document.createElement("button");
+  b.className = "chip" + (active ? " active" : "") + (color ? " group" : "");
+  if (color) b.innerHTML = '<span class="dot" style="background:'+color+'"></span>' + label;
+  else b.textContent = label;
+  b.onclick = onClick;
+  return b;
+}
+
+function renderChips(){
+  groupChips.innerHTML = "";
+  personChips.innerHTML = "";
+  groupChips.appendChild(chip("Alle", filter.type==="all", ()=>setFilter("all",null)));
+  Object.entries(GROUPS).forEach(([key,g]) =>
+    groupChips.appendChild(chip(g.name, filter.type==="group"&&filter.value===key, ()=>setFilter("group",key), g.color)));
+  groupChips.appendChild(chip("❓ Noch offen", filter.type==="open", ()=>setFilter("open",null)));
+  PEOPLE.forEach(p =>
+    personChips.appendChild(chip(p.name, filter.type==="person"&&filter.value===p.name, ()=>setFilter("person",p.name), GROUPS[p.group].color)));
+}
+
+function matches(it){
+  if (filter.type === "all") return true;
+  if (filter.type === "open") return !!it.open;
+  if (filter.type === "person") return it.who.includes(filter.value);
+  if (filter.type === "group") return it.who.some(n => groupOf[n] === filter.value);
+  return true;
+}
+
+function tagHtml(name){
+  if (name === "?") return '<span class="tag open">offen</span>';
+  const g = GROUPS[groupOf[name]];
+  if (g) return '<span class="tag"><span class="dot" style="background:'+g.color+'"></span>'+name+'</span>';
+  return '<span class="tag neutral">'+name+'</span>';
+}
+
+function fmt(d){ return d.getHours() + ":" + String(d.getMinutes()).padStart(2,"0"); }
+
+function renderLive(now){
+  const todayMid = stripTime(now).getTime();
+  const wedMid = stripTime(DAYS.sa).getTime();
+  const diff = Math.round((wedMid - todayMid) / 86400000);
+  let cd;
+  if (diff > 1)  cd = "Noch " + diff + " Tage bis zur Hochzeit ✶";
+  else if (diff === 1) cd = "Morgen ist es so weit! ✶";
+  else if (diff === 0) cd = "Heute ist der grosse Tag! 🎉";
+  else if (diff === -1) cd = "Sonntag — Abbau & Ausklang.";
+  else cd = "Vielen Dank an alle Helfer! ♥";
+
+  // aktueller / nächster Punkt
+  let cur = null, next = null;
+  for (const it of SCHEDULE){
+    const s = statusOf(it, now);
+    if (s === "current" && !it.allday) cur = it;          // laufender getakteter Punkt
+    if (s === "upcoming" && it.ts && !next) next = it;     // nächster getakteter Punkt
+  }
+  // an ruhigen Tagen: heutige Tagesaufgaben als "aktuell"
+  const todayTasks = SCHEDULE.filter(it => it.allday && stripTime(DAYS[it.day]).getTime() === todayMid);
+
+  let rows = '<div class="head"><span class="pulse"></span> Live-Status</div>';
+  rows += '<p class="countdown serif">'+cd+'</p>';
+
+  if (cur){
+    rows += '<div class="nowrow"><span class="lbl">Gerade:</span><span class="val">'+
+            (cur.ts ? '<span class="t">'+fmt(cur.ts)+'</span> · ' : '') + cur.title + '</span></div>';
+  } else if (todayTasks.length){
+    rows += '<div class="nowrow"><span class="lbl">Heute:</span><span class="val">'+
+            todayTasks.map(t=>t.title).join(" · ") + '</span></div>';
+  }
+  if (next){
+    rows += '<div class="nextrow"><span class="lbl">Als Nächstes:</span><span class="val"><span class="t">'+
+            fmt(next.ts)+'</span> · '+ next.title +'</span></div>';
+  }
+  liveEl.innerHTML = rows;
+}
+
+function render(){
+  const now = getNow();
+  renderChips();
+  renderLive(now);
+  scheduleEl.innerHTML = "";
+
+  let total = 0;
+  SECTIONS.forEach(sec => {
+    let items = SCHEDULE.filter(it => it.sec === sec.key && matches(it));
+    if (hidePast) items = items.filter(it => statusOf(it, now) !== "done");
+    if (!items.length) return;
+    total += items.length;
+
+    const isToday = stripTime(DAYS[SEC2DAY[sec.key]]).getTime() === stripTime(now).getTime();
+    const head = document.createElement("div");
+    head.className = "section-head" + (isToday ? " today" : "");
+    head.innerHTML = '<h2>'+sec.title+'</h2><span class="sub">'+sec.sub+'</span>';
+    scheduleEl.appendChild(head);
+
+    items.forEach((it, i) => {
+      const st = statusOf(it, now);
+      const el = document.createElement("div");
+      el.className = "item " + st;
+      el.innerHTML =
+        '<div class="time">'+ (it.time || "") +'</div>' +
+        '<div class="dotcol"><span class="dot2"></span></div>' +
+        '<div class="body">' +
+          '<h3>'+ it.title +'</h3>' +
+          (it.details ? '<p class="details">'+ it.details +'</p>' : '') +
+          (it.who.length ? '<div class="who">'+ it.who.map(tagHtml).join("") +'</div>' : '') +
+        '</div>';
+      scheduleEl.appendChild(el);
+    });
+  });
+
+  countEl.textContent = total + (total === 1 ? " Aufgabe" : " Aufgaben");
+  emptyEl.style.display = total ? "none" : "block";
+}
+
+function setFilter(type, value){
+  filter = { type, value };
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+render();
+// Live-Status jede Minute aktualisieren (nur Echtzeit-Modus)
+if (!tParam) setInterval(render, 60000);
+
+// einmal zum aktuell laufenden Punkt scrollen
+window.addEventListener("load", () => {
+  const cur = document.querySelector(".item.current");
+  if (cur) setTimeout(() => cur.scrollIntoView({ behavior:"smooth", block:"center" }), 400);
+});
+</script>
+</body>
+</html>
