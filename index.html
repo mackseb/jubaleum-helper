@@ -750,6 +750,95 @@
                 stroke-width: 1;
             }
 
+            /* Tisch-Detail (vergrößert, mit Stuhl-Zuordnung) */
+            .tabledetail {
+                background: var(--card);
+                border: 1px solid var(--line);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow);
+                padding: 12px 12px 16px;
+                margin: 0 0 22px;
+            }
+            .tabledetail .dhead {
+                text-align: center;
+                margin: 2px 0 6px;
+            }
+            .tabledetail .dtitle {
+                font-family: "Georgia", serif;
+                font-size: 18px;
+                color: var(--accent-deep);
+            }
+            .tabledetail .dhint {
+                font-size: 12.5px;
+                color: var(--muted);
+                margin: 4px 0 0;
+            }
+            .tabledetail svg {
+                width: 100%;
+                height: auto;
+                display: block;
+                max-width: 460px;
+                margin: 0 auto;
+            }
+            .dfront {
+                text-anchor: middle;
+                font-size: 11px;
+                letter-spacing: 2px;
+                fill: var(--muted);
+                text-transform: uppercase;
+            }
+            .dtable {
+                fill: var(--accent-soft);
+                fill-opacity: 0.5;
+                stroke: var(--accent);
+                stroke-width: 1.5;
+            }
+            .dseat-c {
+                fill: var(--card);
+                stroke: var(--accent);
+                stroke-width: 1.5;
+                transition:
+                    fill 0.15s,
+                    stroke 0.15s;
+            }
+            .dseat-no {
+                text-anchor: middle;
+                dominant-baseline: central;
+                font-size: 13px;
+                font-weight: 600;
+                fill: var(--accent-deep);
+                pointer-events: none;
+            }
+            .dseat-name {
+                dominant-baseline: central;
+                font-size: 12.5px;
+                fill: var(--ink);
+                pointer-events: none;
+            }
+            .dseat.empty .dseat-c {
+                fill: transparent;
+                stroke-dasharray: 3 3;
+                stroke: #cfc7ba;
+            }
+            .dseat.empty .dseat-name {
+                fill: var(--muted);
+                font-style: italic;
+            }
+            .dseat:hover .dseat-c,
+            .dseat.hot .dseat-c {
+                fill: var(--accent);
+                stroke: var(--accent-deep);
+            }
+            .dseat:hover .dseat-no,
+            .dseat.hot .dseat-no {
+                fill: #fff;
+            }
+            .dseat:hover .dseat-name,
+            .dseat.hot .dseat-name {
+                font-weight: 700;
+                fill: var(--accent-deep);
+            }
+
             /* Tisch-Karten (Liste) */
             .tcard {
                 background: var(--card);
@@ -802,6 +891,9 @@
                 background: var(--accent);
                 color: #fff;
                 font-weight: 600;
+            }
+            .gtag.hot {
+                box-shadow: 0 0 0 2px var(--accent);
             }
             .gtag.placeholder {
                 background: transparent;
@@ -890,6 +982,8 @@
                     </div>
                 </div>
 
+                <div class="tabledetail" id="tableDetail"></div>
+
                 <div id="tablesList"></div>
             </div>
 
@@ -944,6 +1038,13 @@
             // TISCHPLAN — Sitzordnung im Schloss. Pro Tisch einfach Namen
             // ergänzen/ändern. Reihenfolge der Tische: oben 0–4, unten 5–9
             // (so wie im Saalplan gezeichnet). "?" = Platz noch offen.
+            //
+            // WICHTIG — die Reihenfolge der Namen bestimmt den STUHL (für die
+            // Tischkarten). In der vergrößerten Tisch-Grafik unten gilt:
+            //   1. Name  = Stuhl 1 (Kopf / vorne)
+            //   2.–5.    = linke Seite, von vorne nach hinten
+            //   6.–9.    = rechte Seite, von vorne nach hinten
+            // Also: Namen einfach in Sitz-Reihenfolge eintragen.
             // ---------------------------------------------------------------
             const TABLES = [
                 {
@@ -1849,11 +1950,13 @@
             const viewTablesEl = document.getElementById("viewTables");
             const saalplanSvgEl = document.getElementById("saalplanSvg");
             const tablesListEl = document.getElementById("tablesList");
+            const detailEl = document.getElementById("tableDetail");
             const tsearchEl = document.getElementById("tsearch");
             const tsearchResultEl = document.getElementById("tsearchResult");
 
             let tablesBuilt = false;
             let selectedTable = null;
+            let detailTable = "0";
 
             function norm(s) {
                 return s
@@ -2002,6 +2105,13 @@
                 saalplanSvgEl.querySelectorAll("[data-table]").forEach((g) => {
                     const id = g.getAttribute("data-table");
                     g.addEventListener("click", () => selectTable(id, true));
+                    // Hover: Tisch vergrößert unten anzeigen (Vorschau)
+                    g.addEventListener("mouseenter", () =>
+                        buildTableDetail(id),
+                    );
+                    g.addEventListener("mouseleave", () =>
+                        buildTableDetail(selectedTable || "0"),
+                    );
                     g.addEventListener("keydown", (e) => {
                         if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
@@ -2009,6 +2119,115 @@
                         }
                     });
                 });
+            }
+
+            // Stuhl-Positionen im vergrößerten Einzeltisch (Reihenfolge =
+            // Kopf, dann linke Seite vorne→hinten, dann rechte Seite).
+            const DSEATS = [
+                { x: 220, y: 60 }, // 1 Kopf / vorne
+                { x: 158, y: 150 }, // 2 links vorne
+                { x: 158, y: 222 }, // 3 links
+                { x: 158, y: 294 }, // 4 links
+                { x: 158, y: 366 }, // 5 links hinten
+                { x: 282, y: 150 }, // 6 rechts vorne
+                { x: 282, y: 222 }, // 7 rechts
+                { x: 282, y: 294 }, // 8 rechts
+                { x: 282, y: 366 }, // 9 rechts hinten
+            ];
+
+            // Zeichnet einen einzelnen Tisch groß, mit Stuhlnummern + Namen.
+            function buildTableDetail(id) {
+                const t = allTables().find((x) => x.id === id);
+                if (!t) return;
+                detailTable = id;
+                const R = 16;
+                let svg =
+                    '<svg viewBox="0 0 440 420" xmlns="http://www.w3.org/2000/svg">';
+                svg +=
+                    '<text class="dfront" x="220" y="16">↑ vorne / Bühne ↑</text>';
+                svg +=
+                    '<rect class="dtable" x="180" y="98" width="80" height="296" rx="14"/>';
+                t.guests.forEach((g, i) => {
+                    if (i >= DSEATS.length) return;
+                    const p = DSEATS[i];
+                    const empty = !g || g === "?";
+                    let nameX,
+                        nameY = p.y,
+                        anchor;
+                    if (i === 0) {
+                        nameX = p.x;
+                        nameY = p.y - R - 9;
+                        anchor = "middle";
+                    } else if (p.x < 220) {
+                        nameX = p.x - R - 7;
+                        anchor = "end";
+                    } else {
+                        nameX = p.x + R + 7;
+                        anchor = "start";
+                    }
+                    svg +=
+                        '<g class="dseat' +
+                        (empty ? " empty" : "") +
+                        '" data-idx="' +
+                        i +
+                        '">' +
+                        '<circle class="dseat-c" cx="' +
+                        p.x +
+                        '" cy="' +
+                        p.y +
+                        '" r="' +
+                        R +
+                        '"/>' +
+                        '<text class="dseat-no" x="' +
+                        p.x +
+                        '" y="' +
+                        p.y +
+                        '">' +
+                        (i + 1) +
+                        "</text>" +
+                        '<text class="dseat-name" x="' +
+                        nameX +
+                        '" y="' +
+                        nameY +
+                        '" text-anchor="' +
+                        anchor +
+                        '">' +
+                        (empty ? "frei" : g) +
+                        "</text>" +
+                        "</g>";
+                });
+                svg += "</svg>";
+                detailEl.innerHTML =
+                    '<div class="dhead"><span class="dtitle">' +
+                    cardTitle(t) +
+                    "</span>" +
+                    '<p class="dhint">Zahl = Stuhl. So sitzen die Gäste — Tischkarten entsprechend verteilen.</p></div>' +
+                    svg;
+                detailEl.querySelectorAll(".dseat").forEach((s) => {
+                    const idx = +s.dataset.idx;
+                    s.addEventListener("mouseenter", () =>
+                        linkHover(id, idx, true),
+                    );
+                    s.addEventListener("mouseleave", () =>
+                        linkHover(id, idx, false),
+                    );
+                });
+            }
+
+            // Hebt Stuhl in der Grafik und passenden Namen in der Liste
+            // gleichzeitig hervor (in beide Richtungen).
+            function linkHover(tableId, idx, on) {
+                const card = document.getElementById("tcard-" + tableId);
+                if (card) {
+                    const tags = card.querySelectorAll(".gtag");
+                    if (tags[idx]) tags[idx].classList.toggle("hot", on);
+                }
+                if (detailTable === tableId) {
+                    const seat = detailEl.querySelector(
+                        '.dseat[data-idx="' + idx + '"]',
+                    );
+                    if (seat) seat.classList.toggle("hot", on);
+                }
             }
 
             function allTables() {
@@ -2046,10 +2265,14 @@
                         (t.note ? '<p class="tnote">' + t.note + "</p>" : "") +
                         '<div class="tnames">' +
                         t.guests
-                            .map((g) =>
+                            .map((g, i) =>
                                 g === "?"
-                                    ? '<span class="gtag placeholder">offen</span>'
-                                    : '<span class="gtag" data-name="' +
+                                    ? '<span class="gtag placeholder" data-idx="' +
+                                      i +
+                                      '">offen</span>'
+                                    : '<span class="gtag" data-idx="' +
+                                      i +
+                                      '" data-name="' +
                                       norm(g) +
                                       '">' +
                                       g +
@@ -2062,9 +2285,18 @@
                 tablesListEl.innerHTML = html;
 
                 tablesListEl.querySelectorAll(".tcard").forEach((c) => {
-                    c.addEventListener("click", () =>
-                        selectTable(c.getAttribute("data-table"), false),
-                    );
+                    const tid = c.getAttribute("data-table");
+                    c.addEventListener("click", () => selectTable(tid, false));
+                    // Hover über einen Namen → passenden Stuhl markieren
+                    c.querySelectorAll(".gtag").forEach((tag) => {
+                        const idx = +tag.dataset.idx;
+                        tag.addEventListener("mouseenter", () =>
+                            linkHover(tid, idx, true),
+                        );
+                        tag.addEventListener("mouseleave", () =>
+                            linkHover(tid, idx, false),
+                        );
+                    });
                 });
             }
 
@@ -2082,6 +2314,7 @@
             function selectTable(id, scroll) {
                 selectedTable = id;
                 highlightSvg(id);
+                buildTableDetail(id);
                 const card = document.getElementById("tcard-" + id);
                 if (!card) return;
                 if (scroll)
@@ -2118,6 +2351,7 @@
                 }
                 const first = hits[0].table;
                 highlightSvg(first.id);
+                buildTableDetail(first.id);
                 if (hits.length === 1) {
                     tsearchResultEl.innerHTML =
                         "<b>" +
@@ -2134,6 +2368,7 @@
                 if (tablesBuilt) return;
                 buildSaalplanSvg();
                 buildTablesList();
+                buildTableDetail(detailTable);
                 tablesBuilt = true;
             }
 
