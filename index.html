@@ -545,6 +545,269 @@
                     flex-basis: 22px;
                 }
             }
+
+            /* ---------- View-Umschalter (Ablaufplan / Tischplan) ---------- */
+            .viewtabs {
+                display: flex;
+                gap: 4px;
+                background: var(--card);
+                border: 1px solid var(--line);
+                border-radius: 999px;
+                padding: 4px;
+                box-shadow: var(--shadow);
+                margin: 0 auto;
+                max-width: 320px;
+            }
+            .viewtab {
+                flex: 1 1 0;
+                border: none;
+                background: none;
+                font-family: inherit;
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--muted);
+                padding: 9px 10px;
+                border-radius: 999px;
+                cursor: pointer;
+                transition: all 0.15s ease;
+                white-space: nowrap;
+            }
+            .viewtab.active {
+                background: var(--accent);
+                color: #fff;
+            }
+
+            /* ---------- Tischplan ---------- */
+            .tables-intro {
+                color: var(--muted);
+                font-size: 14px;
+                text-align: center;
+                margin: 18px 0 14px;
+            }
+            .tsearch-wrap {
+                position: relative;
+                margin: 0 0 8px;
+            }
+            .tsearch {
+                width: 100%;
+                font-family: inherit;
+                font-size: 15px;
+                color: var(--ink);
+                background: var(--card);
+                border: 1px solid var(--line);
+                border-radius: 999px;
+                padding: 12px 16px 12px 40px;
+                box-shadow: var(--shadow);
+            }
+            .tsearch:focus {
+                outline: none;
+                border-color: var(--accent);
+            }
+            .tsearch-wrap::before {
+                content: "🔍";
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 14px;
+                opacity: 0.6;
+            }
+            .tsearch-result {
+                font-size: 13.5px;
+                color: var(--accent-deep);
+                min-height: 18px;
+                margin: 8px 4px 4px;
+                text-align: center;
+            }
+            .tsearch-result b {
+                font-weight: 700;
+            }
+
+            .saalplan {
+                background: var(--card);
+                border: 1px solid var(--line);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow);
+                padding: 12px;
+                margin: 8px 0 22px;
+            }
+            .saalplan .stage {
+                text-align: center;
+                font-size: 11px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--muted);
+                margin: 0 0 6px;
+            }
+            .saalplan svg {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+            .saalplan .legend {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 14px;
+                margin-top: 6px;
+                font-size: 12px;
+                color: var(--muted);
+            }
+            .saalplan .legend span {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+            }
+            .saalplan .legend i {
+                width: 11px;
+                height: 11px;
+                border-radius: 3px;
+                display: inline-block;
+            }
+
+            /* SVG-Elemente */
+            .oval {
+                fill: var(--accent-soft);
+                fill-opacity: 0.35;
+                stroke: var(--accent);
+                stroke-opacity: 0.45;
+                stroke-width: 1.5;
+                stroke-dasharray: 5 7;
+            }
+            .tbl {
+                cursor: pointer;
+            }
+            .tblbody {
+                fill: var(--card);
+                stroke: var(--line);
+                stroke-width: 1.5;
+                transition:
+                    fill 0.15s,
+                    stroke 0.15s;
+            }
+            .tbl:hover .tblbody {
+                stroke: var(--accent);
+            }
+            .tbl.sel .tblbody {
+                fill: var(--accent-soft);
+                stroke: var(--accent);
+                stroke-width: 2.5;
+            }
+            .tblnum {
+                text-anchor: middle;
+                dominant-baseline: central;
+                font-family: "Georgia", serif;
+                font-size: 26px;
+                fill: var(--accent-deep);
+                pointer-events: none;
+            }
+            .seat {
+                fill: var(--accent-soft);
+                stroke: #e7d9c8;
+                stroke-width: 1;
+            }
+            .tbl.sel .seat {
+                fill: #e8d3bd;
+            }
+            .couplebody {
+                fill: var(--accent);
+                stroke: var(--accent-deep);
+                stroke-width: 1.5;
+            }
+            .couplelabel {
+                text-anchor: middle;
+                dominant-baseline: central;
+                font-family: "Georgia", serif;
+                font-size: 15px;
+                fill: #fff;
+                pointer-events: none;
+            }
+            .coupleseat {
+                fill: #e8d3bd;
+                stroke: var(--accent-deep);
+                stroke-width: 1;
+            }
+            .bandbody {
+                fill: #ece7f1;
+                stroke: #cfc3df;
+                stroke-width: 1.5;
+            }
+            .band.sel .bandbody {
+                stroke: #7a6f9b;
+                stroke-width: 2.5;
+            }
+            .bandlabel {
+                text-anchor: middle;
+                dominant-baseline: central;
+                font-family: "Georgia", serif;
+                font-size: 14px;
+                fill: #6f6296;
+                pointer-events: none;
+            }
+            .bandseat {
+                fill: #ddd3ea;
+                stroke: #cfc3df;
+                stroke-width: 1;
+            }
+
+            /* Tisch-Karten (Liste) */
+            .tcard {
+                background: var(--card);
+                border: 1px solid var(--line);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow);
+                padding: 14px 16px;
+                margin: 0 0 12px;
+                scroll-margin-top: 14px;
+                transition: box-shadow 0.2s;
+            }
+            .tcard.flash {
+                box-shadow: 0 0 0 2px var(--accent);
+            }
+            .tcard-h {
+                display: flex;
+                align-items: baseline;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+            .tcard-h .tnum {
+                font-family: "Georgia", serif;
+                font-size: 18px;
+            }
+            .tcard.couple .tcard-h .tnum {
+                color: var(--accent-deep);
+            }
+            .tcard-h .tcount {
+                font-size: 12.5px;
+                color: var(--muted);
+            }
+            .tcard .tnote {
+                font-size: 13px;
+                color: #56514a;
+                margin: -2px 0 10px;
+            }
+            .tnames {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .gtag {
+                font-size: 13px;
+                padding: 4px 10px;
+                border-radius: 999px;
+                background: #f0eee9;
+                color: var(--ink);
+            }
+            .gtag.hit {
+                background: var(--accent);
+                color: #fff;
+                font-weight: 600;
+            }
+            .gtag.placeholder {
+                background: transparent;
+                border: 1px dashed #cfc7ba;
+                color: var(--muted);
+            }
         </style>
     </head>
     <body>
@@ -556,7 +819,15 @@
         </header>
 
         <div class="wrap">
-            <div class="live" id="live"></div>
+            <div class="viewtabs" id="viewtabs">
+                <button class="viewtab active" data-view="plan">
+                    Ablaufplan
+                </button>
+                <button class="viewtab" data-view="tables">Tischplan</button>
+            </div>
+
+            <div id="viewPlan">
+                <div class="live" id="live"></div>
 
             <div class="filterbar" id="filterbar">
                 <div class="filterbar-head" id="filterbarHead">
@@ -587,9 +858,39 @@
                 </label>
             </div>
 
-            <div id="schedule"></div>
-            <div class="empty" id="empty" style="display: none">
-                Keine Aufgaben für diese Auswahl. 💐
+                <div id="schedule"></div>
+                <div class="empty" id="empty" style="display: none">
+                    Keine Aufgaben für diese Auswahl. 💐
+                </div>
+            </div>
+
+            <div id="viewTables" hidden>
+                <p class="tables-intro">
+                    Sitzordnung für den Aufbau · 10 Tische im Oval, Brautpaar in
+                    der Mitte, Band links.
+                </p>
+                <div class="tsearch-wrap">
+                    <input
+                        type="search"
+                        class="tsearch"
+                        id="tsearch"
+                        placeholder="Name suchen … (z. B. wer sitzt wo?)"
+                        autocomplete="off"
+                    />
+                </div>
+                <div class="tsearch-result" id="tsearchResult"></div>
+
+                <div class="saalplan">
+                    <p class="stage">↑ Bühne / Vorne ↑</p>
+                    <div id="saalplanSvg"></div>
+                    <div class="legend">
+                        <span><i style="background: var(--accent)"></i> Brautpaar</span>
+                        <span><i style="background: #c9bce0"></i> Band</span>
+                        <span><i style="background: #fff; border: 1px solid var(--line)"></i> Gästetische</span>
+                    </div>
+                </div>
+
+                <div id="tablesList"></div>
             </div>
 
             <footer>
@@ -638,6 +939,97 @@
                 { name: "Schloss", groups: ["location"] },
                 { name: "Fasan", groups: ["location"] },
             ];
+
+            // ---------------------------------------------------------------
+            // TISCHPLAN — Sitzordnung im Schloss. Pro Tisch einfach Namen
+            // ergänzen/ändern. Reihenfolge der Tische: oben 0–4, unten 5–9
+            // (so wie im Saalplan gezeichnet). "?" = Platz noch offen.
+            // ---------------------------------------------------------------
+            const TABLES = [
+                {
+                    id: "0",
+                    guests: [
+                        "Marc", "Mark", "Tobias K.", "Charleen", "Timo",
+                        "Kira", "Kristof", "Francisco",
+                    ],
+                },
+                {
+                    id: "1",
+                    guests: [
+                        "Florian", "Theresa", "Fenan", "Johanna", "Mona",
+                        "Dominik", "Mariola",
+                    ],
+                },
+                {
+                    id: "2",
+                    guests: [
+                        "Vincent", "Martina", "Heino", "Judith", "Alexander",
+                        "Anna M.", "Hans-Jürgen", "Renate", "Levin",
+                    ],
+                },
+                {
+                    id: "3",
+                    guests: [
+                        "Jan Erik", "Kyungeun (Lindsay)", "Mirjam", "Lilith",
+                        "Gregor", "Gizem", "Tim P.", "Mascha", "Oliver",
+                    ],
+                },
+                {
+                    id: "4",
+                    guests: [
+                        "Hanne", "Lene", "Nadine", "Andreas S.", "Uta",
+                        "Anton", "Silvia", "Hanne",
+                    ],
+                },
+                {
+                    id: "5",
+                    guests: [
+                        "Jens", "Nicola", "Enna Mae", "Eda Lou", "Peter",
+                        "Alexandra", "Karin", "Michael", "Willy",
+                    ],
+                },
+                {
+                    id: "6",
+                    guests: [
+                        "Lukas M.", "Monika", "Sebastian", "Leo B.", "Eva",
+                        "Leo E.", "Joshuah", "Anna P.", "Jonah",
+                    ],
+                },
+                {
+                    id: "7",
+                    guests: [
+                        "Anika", "Jasper R.", "Amarjyot", "Jasper N.", "Lorna",
+                        "Marcel", "Hannah", "Fiona", "Björn",
+                    ],
+                },
+                {
+                    id: "8",
+                    guests: [
+                        "Lisa", "Andreas G.", "Tim H.", "Celine", "Verena",
+                        "Laura", "Marie", "Tobias H.", "Martin",
+                    ],
+                },
+                {
+                    id: "9",
+                    guests: [
+                        "Carina", "Jan-Dirk", "Josephine", "Thaddeus", "Birgit",
+                        "Roy", "Clara", "Anne", "Lukas P.",
+                    ],
+                },
+            ];
+            // Brautpaar-Tisch in der Mitte — hier kommen wechselnde Gäste dazu.
+            const CENTER_TABLE = {
+                id: "brautpaar",
+                label: "Brautpaar",
+                note: "Tisch in der Mitte — hier dürfen immer wieder andere Gäste dazukommen.",
+                guests: ["Julia", "Sebastian"],
+            };
+            // Band-Tisch.
+            const BAND_TABLE = {
+                id: "band",
+                label: "Band",
+                guests: ["Ingo", "Band 1", "Band 2", "Band 3", "Band 4"],
+            };
 
             // Abschnitte (Reihenfolge = Anzeige-Reihenfolge)
             const SECTIONS = [
@@ -1450,6 +1842,321 @@
                 render();
                 window.scrollTo({ top: 0, behavior: "smooth" });
             }
+
+            /* ---------- Tischplan: Ansicht, Saalplan-Grafik, Suche ---------- */
+
+            const viewPlanEl = document.getElementById("viewPlan");
+            const viewTablesEl = document.getElementById("viewTables");
+            const saalplanSvgEl = document.getElementById("saalplanSvg");
+            const tablesListEl = document.getElementById("tablesList");
+            const tsearchEl = document.getElementById("tsearch");
+            const tsearchResultEl = document.getElementById("tsearchResult");
+
+            let tablesBuilt = false;
+            let selectedTable = null;
+
+            function norm(s) {
+                return s
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[̀-ͯ]/g, "")
+                    .trim();
+            }
+
+            // Tisch-Maße (etwas schlanker, damit mehr Abstand bleibt).
+            const BW = 50,
+                BH = 132,
+                SW = 15,
+                SH = 19,
+                GAP = 5;
+            // Konzentrische Anordnung um den Brautpaar-Tisch (Mitte 400/280).
+            // Jeder Tisch: cx (Mitte), by (Oberkante Korpus), rot (Neigung Grad).
+            // Obere Reihe 0–4 bogen nach oben, untere 5–9 nach unten – beide
+            // fächern zur Mitte hin, sodass sie das Oval bilden.
+            const SLOTS = {
+                "0": { cx: 168, by: 124, rot: -26, head: true },
+                "1": { cx: 282, by: 80, rot: -13, head: true },
+                "2": { cx: 400, by: 58, rot: 0, head: true },
+                "3": { cx: 518, by: 80, rot: 13, head: true },
+                "4": { cx: 632, by: 124, rot: 26, head: true },
+                "5": { cx: 168, by: 304, rot: 26, head: false },
+                "6": { cx: 282, by: 348, rot: 13, head: false },
+                "7": { cx: 400, by: 370, rot: 0, head: false },
+                "8": { cx: 518, by: 348, rot: -13, head: false },
+                "9": { cx: 632, by: 304, rot: -26, head: false },
+            };
+
+            function seatRect(cls, x, y) {
+                return (
+                    '<rect class="' +
+                    cls +
+                    '" x="' +
+                    x +
+                    '" y="' +
+                    y +
+                    '" width="' +
+                    SW +
+                    '" height="' +
+                    SH +
+                    '" rx="6"/>'
+                );
+            }
+
+            // Ein Biertisch (vertikal). headTop=true -> Kopfplatz oben.
+            // rot = leichte Drehung (Grad), damit die äußeren Tische dem Oval folgen.
+            function tableNode(cx, by, id, headTop, rot) {
+                const left = cx - BW / 2,
+                    right = cx + BW / 2;
+                let seats = "";
+                for (let i = 0; i < 4; i++) {
+                    const sy = by + 12 + (i * (BH - 24)) / 3 - SH / 2;
+                    seats += seatRect("seat", left - GAP - SW, sy);
+                    seats += seatRect("seat", right + GAP, sy);
+                }
+                const hy = headTop ? by - GAP - SH : by + BH + GAP;
+                seats += seatRect("seat", cx - SW / 2, hy);
+                const cy = by + BH / 2;
+                const transform = rot
+                    ? ' transform="rotate(' + rot + " " + cx + " " + cy + ')"'
+                    : "";
+                return (
+                    '<g class="tbl" data-table="' +
+                    id +
+                    '" role="button" tabindex="0" aria-label="Tisch ' +
+                    id +
+                    '"' +
+                    transform +
+                    ">" +
+                    seats +
+                    '<rect class="tblbody" x="' +
+                    left +
+                    '" y="' +
+                    by +
+                    '" width="' +
+                    BW +
+                    '" height="' +
+                    BH +
+                    '" rx="12"/>' +
+                    '<text class="tblnum" x="' +
+                    cx +
+                    '" y="' +
+                    (by + BH / 2) +
+                    '">' +
+                    id +
+                    "</text>" +
+                    "</g>"
+                );
+            }
+
+            function buildSaalplanSvg() {
+                let svg =
+                    '<svg viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg">';
+                // Schematische Oval-Kontur um die Anordnung
+                svg +=
+                    '<ellipse class="oval" cx="400" cy="280" rx="368" ry="252"/>';
+                // Gästetische konzentrisch ums Zentrum
+                for (let n = 0; n <= 9; n++) {
+                    const s = SLOTS[String(n)];
+                    svg += tableNode(s.cx, s.by, String(n), s.head, s.rot);
+                }
+
+                // Band-Tisch (linker Ovalscheitel)
+                svg +=
+                    '<g class="band" data-table="band" role="button" tabindex="0" aria-label="Band-Tisch">' +
+                    '<rect class="bandseat" x="18" y="244" width="18" height="20" rx="6"/>' +
+                    '<rect class="bandseat" x="72" y="244" width="18" height="20" rx="6"/>' +
+                    '<rect class="bandseat" x="18" y="296" width="18" height="20" rx="6"/>' +
+                    '<rect class="bandseat" x="72" y="296" width="18" height="20" rx="6"/>' +
+                    '<rect class="bandbody" x="22" y="266" width="64" height="28" rx="9"/>' +
+                    '<text class="bandlabel" x="54" y="281">♪ Band</text>' +
+                    "</g>";
+
+                // Brautpaar-Tisch (Zentrum 400/280)
+                const cx = 400;
+                let cseats = "";
+                for (let i = 0; i < 4; i++) {
+                    const x = cx - 66 + i * 36;
+                    cseats +=
+                        '<rect class="coupleseat" x="' +
+                        x +
+                        '" y="234" width="26" height="20" rx="6"/>';
+                    cseats +=
+                        '<rect class="coupleseat" x="' +
+                        x +
+                        '" y="306" width="26" height="20" rx="6"/>';
+                }
+                cseats +=
+                    '<rect class="coupleseat" x="316" y="266" width="20" height="28" rx="6"/>';
+                cseats +=
+                    '<rect class="coupleseat" x="464" y="266" width="20" height="28" rx="6"/>';
+                svg +=
+                    '<g class="couple" data-table="brautpaar" role="button" tabindex="0" aria-label="Brautpaar-Tisch">' +
+                    cseats +
+                    '<rect class="couplebody" x="340" y="258" width="120" height="44" rx="12"/>' +
+                    '<text class="couplelabel" x="400" y="280">♥ Brautpaar</text>' +
+                    "</g>";
+
+                svg += "</svg>";
+                saalplanSvgEl.innerHTML = svg;
+
+                saalplanSvgEl.querySelectorAll("[data-table]").forEach((g) => {
+                    const id = g.getAttribute("data-table");
+                    g.addEventListener("click", () => selectTable(id, true));
+                    g.addEventListener("keydown", (e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            selectTable(id, true);
+                        }
+                    });
+                });
+            }
+
+            function allTables() {
+                return TABLES.concat([CENTER_TABLE, BAND_TABLE]);
+            }
+
+            function cardTitle(t) {
+                if (t.id === "brautpaar") return "♥ Brautpaar-Tisch";
+                if (t.id === "band") return "♪ Band";
+                return "Tisch " + t.id;
+            }
+
+            function buildTablesList() {
+                let html = "";
+                allTables().forEach((t) => {
+                    const real = t.guests.filter((g) => g && g !== "?").length;
+                    const cls =
+                        "tcard" +
+                        (t.id === "brautpaar" ? " couple" : "") +
+                        (t.id === "band" ? " band" : "");
+                    html +=
+                        '<div class="' +
+                        cls +
+                        '" id="tcard-' +
+                        t.id +
+                        '" data-table="' +
+                        t.id +
+                        '">' +
+                        '<div class="tcard-h"><span class="tnum">' +
+                        cardTitle(t) +
+                        '</span><span class="tcount">' +
+                        real +
+                        (real === 1 ? " Gast" : " Gäste") +
+                        "</span></div>" +
+                        (t.note ? '<p class="tnote">' + t.note + "</p>" : "") +
+                        '<div class="tnames">' +
+                        t.guests
+                            .map((g) =>
+                                g === "?"
+                                    ? '<span class="gtag placeholder">offen</span>'
+                                    : '<span class="gtag" data-name="' +
+                                      norm(g) +
+                                      '">' +
+                                      g +
+                                      "</span>",
+                            )
+                            .join("") +
+                        "</div>" +
+                        "</div>";
+                });
+                tablesListEl.innerHTML = html;
+
+                tablesListEl.querySelectorAll(".tcard").forEach((c) => {
+                    c.addEventListener("click", () =>
+                        selectTable(c.getAttribute("data-table"), false),
+                    );
+                });
+            }
+
+            function highlightSvg(id) {
+                saalplanSvgEl
+                    .querySelectorAll("[data-table]")
+                    .forEach((g) =>
+                        g.classList.toggle(
+                            "sel",
+                            g.getAttribute("data-table") === id,
+                        ),
+                    );
+            }
+
+            function selectTable(id, scroll) {
+                selectedTable = id;
+                highlightSvg(id);
+                const card = document.getElementById("tcard-" + id);
+                if (!card) return;
+                if (scroll)
+                    card.scrollIntoView({ behavior: "smooth", block: "center" });
+                card.classList.add("flash");
+                setTimeout(() => card.classList.remove("flash"), 1200);
+            }
+
+            function runSearch() {
+                const q = norm(tsearchEl.value);
+                tablesListEl
+                    .querySelectorAll(".gtag.hit")
+                    .forEach((el) => el.classList.remove("hit"));
+                if (q.length < 2) {
+                    tsearchResultEl.textContent = "";
+                    highlightSvg(selectedTable);
+                    return;
+                }
+                const hits = [];
+                allTables().forEach((t) => {
+                    t.guests.forEach((g) => {
+                        if (g !== "?" && norm(g).includes(q))
+                            hits.push({ table: t, name: g });
+                    });
+                });
+                tablesListEl.querySelectorAll(".gtag").forEach((el) => {
+                    if (el.dataset.name && el.dataset.name.includes(q))
+                        el.classList.add("hit");
+                });
+                if (!hits.length) {
+                    tsearchResultEl.textContent = "Niemand gefunden.";
+                    highlightSvg(null);
+                    return;
+                }
+                const first = hits[0].table;
+                highlightSvg(first.id);
+                if (hits.length === 1) {
+                    tsearchResultEl.innerHTML =
+                        "<b>" +
+                        hits[0].name +
+                        "</b> sitzt an " +
+                        cardTitle(first).replace(/[♥♪]\s*/, "");
+                } else {
+                    tsearchResultEl.textContent =
+                        hits.length + " Treffer — siehe Hervorhebungen unten.";
+                }
+            }
+
+            function renderTables() {
+                if (tablesBuilt) return;
+                buildSaalplanSvg();
+                buildTablesList();
+                tablesBuilt = true;
+            }
+
+            tsearchEl.addEventListener("input", runSearch);
+
+            function setView(v) {
+                const tables = v === "tables";
+                viewPlanEl.hidden = tables;
+                viewTablesEl.hidden = !tables;
+                document
+                    .querySelectorAll(".viewtab")
+                    .forEach((b) =>
+                        b.classList.toggle(
+                            "active",
+                            b.dataset.view === v,
+                        ),
+                    );
+                if (tables) renderTables();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+            document.querySelectorAll(".viewtab").forEach((b) =>
+                b.addEventListener("click", () => setView(b.dataset.view)),
+            );
 
             render();
             // Live-Status jede Minute aktualisieren (nur Echtzeit-Modus)
