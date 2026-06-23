@@ -921,34 +921,34 @@
             <div id="viewPlan">
                 <div class="live" id="live"></div>
 
-            <div class="filterbar" id="filterbar">
-                <div class="filterbar-head" id="filterbarHead">
-                    <span class="filter-summary"
-                        >Filter: <b id="filterSummary">Alle</b></span
-                    >
-                    <button
-                        class="filter-toggle"
-                        aria-label="Filter ein-/ausklappen"
-                    >
-                        Filtern <span class="filter-chevron">▾</span>
-                    </button>
+                <div class="filterbar" id="filterbar">
+                    <div class="filterbar-head" id="filterbarHead">
+                        <span class="filter-summary"
+                            >Filter: <b id="filterSummary">Alle</b></span
+                        >
+                        <button
+                            class="filter-toggle"
+                            aria-label="Filter ein-/ausklappen"
+                        >
+                            Filtern <span class="filter-chevron">▾</span>
+                        </button>
+                    </div>
+                    <div class="filterbar-body">
+                        <p class="filter-label">Nach Gruppe</p>
+                        <div class="chips group-row" id="groupChips"></div>
+                        <p class="filter-label">Nach Person</p>
+                        <div class="chips" id="personChips"></div>
+                    </div>
                 </div>
-                <div class="filterbar-body">
-                    <p class="filter-label">Nach Gruppe</p>
-                    <div class="chips group-row" id="groupChips"></div>
-                    <p class="filter-label">Nach Person</p>
-                    <div class="chips" id="personChips"></div>
-                </div>
-            </div>
 
-            <div class="toolbar">
-                <span class="count" id="count"></span>
-                <label class="toggle">
-                    <input type="checkbox" id="hidePast" />
-                    <span class="switch"></span>
-                    Vergangenes ausblenden
-                </label>
-            </div>
+                <div class="toolbar">
+                    <span class="count" id="count"></span>
+                    <label class="toggle">
+                        <input type="checkbox" id="hidePast" />
+                        <span class="switch"></span>
+                        Vergangenes ausblenden
+                    </label>
+                </div>
 
                 <div id="schedule"></div>
                 <div class="empty" id="empty" style="display: none">
@@ -973,12 +973,22 @@
                 <div class="tsearch-result" id="tsearchResult"></div>
 
                 <div class="saalplan">
-                    <p class="stage">↑ Bühne / Vorne ↑</p>
                     <div id="saalplanSvg"></div>
                     <div class="legend">
-                        <span><i style="background: var(--accent)"></i> Brautpaar</span>
+                        <span
+                            ><i style="background: var(--accent)"></i>
+                            Brautpaar</span
+                        >
                         <span><i style="background: #c9bce0"></i> Band</span>
-                        <span><i style="background: #fff; border: 1px solid var(--line)"></i> Gästetische</span>
+                        <span
+                            ><i
+                                style="
+                                    background: #fff;
+                                    border: 1px solid var(--line);
+                                "
+                            ></i>
+                            Gästetische</span
+                        >
                     </div>
                 </div>
 
@@ -1050,71 +1060,137 @@
                 {
                     id: "0",
                     guests: [
-                        "Marc", "Mark", "Tobias K.", "Charleen", "Timo",
-                        "Kira", "Kristof", "Francisco",
+                        "Marc",
+                        "Mark",
+                        "Tobias K.",
+                        "Charleen",
+                        "Timo",
+                        "Kira",
+                        "Kristof",
+                        "Francisco",
                     ],
                 },
                 {
                     id: "1",
                     guests: [
-                        "Florian", "Theresa", "Fenan", "Johanna", "Mona",
-                        "Dominik", "Mariola",
+                        "Florian",
+                        "Theresa",
+                        "Fenan",
+                        "Johanna",
+                        "Mona",
+                        "Dominik",
+                        "Mariola",
                     ],
                 },
                 {
                     id: "2",
                     guests: [
-                        "Vincent", "Martina", "Heino", "Judith", "Alexander",
-                        "Anna M.", "Hans-Jürgen", "Renate", "Levin",
+                        "Vincent",
+                        "Martina",
+                        "Heino",
+                        "Judith",
+                        "Alexander",
+                        "Anna M.",
+                        "Hans-Jürgen",
+                        "Renate",
+                        "Levin",
                     ],
                 },
                 {
                     id: "3",
                     guests: [
-                        "Jan Erik", "Kyungeun (Lindsay)", "Mirjam", "Lilith",
-                        "Gregor", "Gizem", "Tim P.", "Mascha", "Oliver",
+                        "Jan Erik",
+                        "Kyungeun (Lindsay)",
+                        "Mirjam",
+                        "Lilith",
+                        "Gregor",
+                        "Gizem",
+                        "Tim P.",
+                        "Mascha",
+                        "Oliver",
                     ],
                 },
                 {
                     id: "4",
                     guests: [
-                        "Hanne", "Lene", "Nadine", "Andreas S.", "Uta",
-                        "Anton", "Silvia", "Hanne",
+                        "Hanne",
+                        "Lene",
+                        "Nadine",
+                        "Andreas S.",
+                        "Uta",
+                        "Anton",
+                        "Silvia",
+                        "Hanne",
                     ],
                 },
                 {
                     id: "5",
                     guests: [
-                        "Jens", "Nicola", "Enna Mae", "Eda Lou", "Peter",
-                        "Alexandra", "Karin", "Michael", "Willy",
+                        "Jens",
+                        "Nicola",
+                        "Enna Mae",
+                        "Eda Lou",
+                        "Peter",
+                        "Alexandra",
+                        "Karin",
+                        "Michael",
+                        "Willy",
                     ],
                 },
                 {
                     id: "6",
                     guests: [
-                        "Lukas M.", "Monika", "Sebastian", "Leo B.", "Eva",
-                        "Leo E.", "Joshuah", "Anna P.", "Jonah",
+                        "Lukas M.",
+                        "Monika",
+                        "Sebastian",
+                        "Leo B.",
+                        "Eva",
+                        "Leo E.",
+                        "Joshuah",
+                        "Anna P.",
+                        "Jonah",
                     ],
                 },
                 {
                     id: "7",
                     guests: [
-                        "Anika", "Jasper R.", "Amarjyot", "Jasper N.", "Lorna",
-                        "Marcel", "Hannah", "Fiona", "Björn",
+                        "Anika",
+                        "Jasper R.",
+                        "Amarjyot",
+                        "Jasper N.",
+                        "Lorna",
+                        "Marcel",
+                        "Hannah",
+                        "Fiona",
+                        "Björn",
                     ],
                 },
                 {
                     id: "8",
                     guests: [
-                        "Lisa", "Andreas G.", "Tim H.", "Celine", "Verena",
-                        "Laura", "Marie", "Tobias H.", "Martin",
+                        "Lisa",
+                        "Andreas G.",
+                        "Tim H.",
+                        "Celine",
+                        "Verena",
+                        "Laura",
+                        "Marie",
+                        "Tobias H.",
+                        "Martin",
                     ],
                 },
                 {
                     id: "9",
                     guests: [
-                        "Carina", "Jan-Dirk", "Josephine", "Thaddeus", "Birgit",
-                        "Roy", "Clara", "Anne", "Lukas P.",
+                        "Carina",
+                        "Jan-Dirk",
+                        "Josephine",
+                        "Thaddeus",
+                        "Birgit",
+                        "Roy",
+                        "Clara",
+                        "Anne",
+                        "Lukas P.",
                     ],
                 },
             ];
@@ -1834,8 +1910,13 @@
                 for (const it of SCHEDULE) {
                     const s = statusOf(it, now);
                     if (s === "current" && !it.allday) cur = it;
-                    if (s === "upcoming" && it.ts && !next &&
-                        stripTime(DAYS[it.day]).getTime() === todayMid) next = it;
+                    if (
+                        s === "upcoming" &&
+                        it.ts &&
+                        !next &&
+                        stripTime(DAYS[it.day]).getTime() === todayMid
+                    )
+                        next = it;
                 }
                 // an ruhigen Tagen: heutige Tagesaufgaben als "aktuell"
                 const todayTasks = SCHEDULE.filter(
@@ -1977,16 +2058,16 @@
             // Obere Reihe 0–4 bogen nach oben, untere 5–9 nach unten – beide
             // fächern zur Mitte hin, sodass sie das Oval bilden.
             const SLOTS = {
-                "0": { cx: 168, by: 124, rot: -26, head: true },
-                "1": { cx: 282, by: 80, rot: -13, head: true },
-                "2": { cx: 400, by: 58, rot: 0, head: true },
-                "3": { cx: 518, by: 80, rot: 13, head: true },
-                "4": { cx: 632, by: 124, rot: 26, head: true },
-                "5": { cx: 168, by: 304, rot: 26, head: false },
-                "6": { cx: 282, by: 348, rot: 13, head: false },
-                "7": { cx: 400, by: 370, rot: 0, head: false },
-                "8": { cx: 518, by: 348, rot: -13, head: false },
-                "9": { cx: 632, by: 304, rot: -26, head: false },
+                0: { cx: 168, by: 124, rot: -26, head: true },
+                1: { cx: 282, by: 80, rot: -13, head: true },
+                2: { cx: 400, by: 58, rot: 0, head: true },
+                3: { cx: 518, by: 80, rot: 13, head: true },
+                4: { cx: 632, by: 124, rot: 26, head: true },
+                5: { cx: 168, by: 304, rot: 26, head: false },
+                6: { cx: 282, by: 348, rot: 13, head: false },
+                7: { cx: 400, by: 370, rot: 0, head: false },
+                8: { cx: 518, by: 348, rot: -13, head: false },
+                9: { cx: 632, by: 304, rot: -26, head: false },
             };
 
             function seatRect(cls, x, y) {
@@ -2123,7 +2204,9 @@
 
             // Stuhl-Positionen im vergrößerten Einzeltisch (Reihenfolge =
             // Kopf, dann linke Seite vorne→hinten, dann rechte Seite).
-            const DSEATS = [
+            // Obere Reihe (Tische 0–4): Stuhl 1 oben. Untere Reihe (5–9):
+            // gespiegelt, Stuhl 1 unten – passend zur Lage im Saalplan.
+            const DSEATS_TOP = [
                 { x: 220, y: 60 }, // 1 Kopf / vorne
                 { x: 158, y: 150 }, // 2 links vorne
                 { x: 158, y: 222 }, // 3 links
@@ -2134,6 +2217,17 @@
                 { x: 282, y: 294 }, // 8 rechts
                 { x: 282, y: 366 }, // 9 rechts hinten
             ];
+            const DSEATS_BOTTOM = [
+                { x: 220, y: 370 }, // 1 Kopf (unten)
+                { x: 158, y: 280 }, // 2 links vorne
+                { x: 158, y: 208 }, // 3 links
+                { x: 158, y: 136 }, // 4 links
+                { x: 158, y: 64 }, // 5 links hinten
+                { x: 282, y: 280 }, // 6 rechts vorne
+                { x: 282, y: 208 }, // 7 rechts
+                { x: 282, y: 136 }, // 8 rechts
+                { x: 282, y: 64 }, // 9 rechts hinten
+            ];
 
             // Zeichnet einen einzelnen Tisch groß, mit Stuhlnummern + Namen.
             function buildTableDetail(id) {
@@ -2141,12 +2235,16 @@
                 if (!t) return;
                 detailTable = id;
                 const R = 16;
+                // Untere Tischreihe (5–9) gespiegelt: Kopf/Stuhl 1 unten.
+                const flip = /^[5-9]$/.test(id);
+                const DSEATS = flip ? DSEATS_BOTTOM : DSEATS_TOP;
+                const tblY = flip ? 36 : 98;
                 let svg =
-                    '<svg viewBox="0 0 440 420" xmlns="http://www.w3.org/2000/svg">';
+                    '<svg viewBox="0 0 440 430" xmlns="http://www.w3.org/2000/svg">';
                 svg +=
-                    '<text class="dfront" x="220" y="16">↑ vorne / Bühne ↑</text>';
-                svg +=
-                    '<rect class="dtable" x="180" y="98" width="80" height="296" rx="14"/>';
+                    '<rect class="dtable" x="180" y="' +
+                    tblY +
+                    '" width="80" height="296" rx="14"/>';
                 t.guests.forEach((g, i) => {
                     if (i >= DSEATS.length) return;
                     const p = DSEATS[i];
@@ -2156,7 +2254,7 @@
                         anchor;
                     if (i === 0) {
                         nameX = p.x;
-                        nameY = p.y - R - 9;
+                        nameY = flip ? p.y + R + 9 : p.y - R - 9;
                         anchor = "middle";
                     } else if (p.x < 220) {
                         nameX = p.x - R - 7;
@@ -2315,10 +2413,13 @@
                 selectedTable = id;
                 highlightSvg(id);
                 buildTableDetail(id);
+                if (scroll)
+                    detailEl.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                    });
                 const card = document.getElementById("tcard-" + id);
                 if (!card) return;
-                if (scroll)
-                    card.scrollIntoView({ behavior: "smooth", block: "center" });
                 card.classList.add("flash");
                 setTimeout(() => card.classList.remove("flash"), 1200);
             }
@@ -2381,17 +2482,16 @@
                 document
                     .querySelectorAll(".viewtab")
                     .forEach((b) =>
-                        b.classList.toggle(
-                            "active",
-                            b.dataset.view === v,
-                        ),
+                        b.classList.toggle("active", b.dataset.view === v),
                     );
                 if (tables) renderTables();
                 window.scrollTo({ top: 0, behavior: "smooth" });
             }
-            document.querySelectorAll(".viewtab").forEach((b) =>
-                b.addEventListener("click", () => setView(b.dataset.view)),
-            );
+            document
+                .querySelectorAll(".viewtab")
+                .forEach((b) =>
+                    b.addEventListener("click", () => setView(b.dataset.view)),
+                );
 
             render();
             // Live-Status jede Minute aktualisieren (nur Echtzeit-Modus)
