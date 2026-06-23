@@ -235,6 +235,56 @@
                 margin-bottom: 12px;
             }
 
+            /* filterbar collapse */
+            .filterbar-head {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                cursor: pointer;
+                user-select: none;
+                gap: 10px;
+            }
+            .filter-summary {
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .filter-summary b {
+                color: var(--accent-deep);
+            }
+            .filter-toggle {
+                background: none;
+                border: 1px solid var(--line);
+                border-radius: 999px;
+                font-size: 12px;
+                color: var(--muted);
+                padding: 5px 12px;
+                cursor: pointer;
+                font-family: inherit;
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                flex-shrink: 0;
+                transition: border-color 0.15s;
+                white-space: nowrap;
+            }
+            .filter-toggle:hover { border-color: var(--accent); }
+            .filter-chevron {
+                display: inline-block;
+                transition: transform 0.2s;
+            }
+            .filterbar.open .filter-chevron { transform: rotate(180deg); }
+            .filterbar-body {
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transition: max-height 0.3s ease, opacity 0.2s ease, padding-top 0.2s ease;
+            }
+            .filterbar.open .filterbar-body {
+                max-height: 600px;
+                opacity: 1;
+                padding-top: 10px;
+            }
+
             .toolbar {
                 display: flex;
                 align-items: center;
@@ -501,11 +551,19 @@
         <div class="wrap">
             <div class="live" id="live"></div>
 
-            <div class="filterbar">
-                <p class="filter-label">Nach Gruppe</p>
-                <div class="chips group-row" id="groupChips"></div>
-                <p class="filter-label">Nach Person</p>
-                <div class="chips" id="personChips"></div>
+            <div class="filterbar" id="filterbar">
+                <div class="filterbar-head" id="filterbarHead">
+                    <span class="filter-summary">Filter: <b id="filterSummary">Alle</b></span>
+                    <button class="filter-toggle" aria-label="Filter ein-/ausklappen">
+                        Filtern <span class="filter-chevron">▾</span>
+                    </button>
+                </div>
+                <div class="filterbar-body">
+                    <p class="filter-label">Nach Gruppe</p>
+                    <div class="chips group-row" id="groupChips"></div>
+                    <p class="filter-label">Nach Person</p>
+                    <div class="chips" id="personChips"></div>
+                </div>
             </div>
 
             <div class="toolbar">
@@ -1139,6 +1197,18 @@
             let filter = { type: "all", value: null };
             let hidePast = false;
 
+            document.getElementById("filterbarHead").addEventListener("click", () => {
+                document.getElementById("filterbar").classList.toggle("open");
+            });
+
+            function filterLabel() {
+                if (filter.type === "all") return "Alle";
+                if (filter.type === "open") return "Noch offen";
+                if (filter.type === "group") return GROUPS[filter.value].name;
+                if (filter.type === "person") return filter.value;
+                return "Alle";
+            }
+
             const groupChips = document.getElementById("groupChips");
             const personChips = document.getElementById("personChips");
             const scheduleEl = document.getElementById("schedule");
@@ -1296,6 +1366,7 @@
                 const now = getNow();
                 renderChips();
                 renderLive(now);
+                document.getElementById("filterSummary").textContent = filterLabel();
                 scheduleEl.innerHTML = "";
 
                 let total = 0;
@@ -1356,6 +1427,7 @@
 
             function setFilter(type, value) {
                 filter = { type, value };
+                document.getElementById("filterbar").classList.remove("open");
                 render();
                 window.scrollTo({ top: 0, behavior: "smooth" });
             }
