@@ -749,6 +749,16 @@
                 stroke-width: 1.5;
                 stroke-dasharray: 4 4;
             }
+            .screenframe {
+                fill: #f4f1ea;
+                stroke: #b9a98f;
+                stroke-width: 2;
+            }
+            .screenstand {
+                stroke: #b9a98f;
+                stroke-width: 2;
+                stroke-linecap: round;
+            }
             .bandlabel {
                 text-anchor: middle;
                 dominant-baseline: central;
@@ -967,7 +977,7 @@
             <div id="viewTables" hidden>
                 <p class="tables-intro">
                     Sitzordnung für den Aufbau · 10 Tische im Oval, Brautpaar in
-                    der Mitte, Bühne links.
+                    der Mitte, Bühne links, Beamer-Leinwand rechts.
                 </p>
                 <p class="guest-counter" id="guestTotal"></p>
                 <div class="tsearch-wrap">
@@ -989,6 +999,7 @@
                             Brautpaar</span
                         >
                         <span><i style="background: #c9bce0"></i> Bühne</span>
+                        <span><i style="background: #f4f1ea; border: 1px solid #b9a98f"></i> Beamer</span>
                         <span
                             ><i
                                 style="
@@ -2155,6 +2166,15 @@
                     '<g class="band" aria-label="Band-Bühne">' +
                     '<circle class="bandstage" cx="54" cy="280" r="36"/>' +
                     '<text class="bandlabel" x="54" y="280">♪ Bühne</text>' +
+                    "</g>";
+
+                // Beamer-Leinwand (rechter Ovalscheitel, gegenüber der Bühne)
+                svg +=
+                    '<g class="screen" aria-label="Beamer-Leinwand">' +
+                    '<rect class="screenframe" x="716" y="252" width="60" height="40" rx="3"/>' +
+                    '<line class="screenstand" x1="746" y1="292" x2="746" y2="306"/>' +
+                    '<line class="screenstand" x1="734" y1="306" x2="758" y2="306"/>' +
+                    '<text class="bandlabel" x="746" y="272">▶ Beamer</text>' +
                     "</g>";
 
                 // Brautpaar-Tisch (Zentrum 400/280)
