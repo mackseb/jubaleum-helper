@@ -743,14 +743,11 @@
                 stroke: var(--accent-deep);
                 stroke-width: 1;
             }
-            .bandbody {
+            .bandstage {
                 fill: #ece7f1;
                 stroke: #cfc3df;
                 stroke-width: 1.5;
-            }
-            .band.sel .bandbody {
-                stroke: #7a6f9b;
-                stroke-width: 2.5;
+                stroke-dasharray: 4 4;
             }
             .bandlabel {
                 text-anchor: middle;
@@ -759,11 +756,6 @@
                 font-size: 14px;
                 fill: #6f6296;
                 pointer-events: none;
-            }
-            .bandseat {
-                fill: #ddd3ea;
-                stroke: #cfc3df;
-                stroke-width: 1;
             }
 
             /* Tisch-Detail (vergrößert, mit Stuhl-Zuordnung) */
@@ -975,7 +967,7 @@
             <div id="viewTables" hidden>
                 <p class="tables-intro">
                     Sitzordnung für den Aufbau · 10 Tische im Oval, Brautpaar in
-                    der Mitte, Band links.
+                    der Mitte, Bühne links.
                 </p>
                 <p class="guest-counter" id="guestTotal"></p>
                 <div class="tsearch-wrap">
@@ -996,7 +988,7 @@
                             ><i style="background: var(--accent)"></i>
                             Brautpaar</span
                         >
-                        <span><i style="background: #c9bce0"></i> Band</span>
+                        <span><i style="background: #c9bce0"></i> Bühne</span>
                         <span
                             ><i
                                 style="
@@ -1222,13 +1214,6 @@
                 note: "Tisch in der Mitte — hier dürfen immer wieder andere Gäste dazukommen.",
                 guests: ["Julia", "Sebastian"],
             };
-            // Band-Tisch.
-            const BAND_TABLE = {
-                id: "band",
-                label: "Band",
-                guests: ["Ingo", "Band 1", "Band 2", "Band 3", "Band 4"],
-            };
-
             // Abschnitte (Reihenfolge = Anzeige-Reihenfolge)
             const SECTIONS = [
                 { key: "di", title: "Dienstag", sub: "23. Juni" },
@@ -2165,15 +2150,11 @@
                     svg += tableNode(s.cx, s.by, String(n), s.head, s.rot);
                 }
 
-                // Band-Tisch (linker Ovalscheitel)
+                // Band-Bühne (linker Ovalscheitel) — keine Gäste, nur Bühnenfläche
                 svg +=
-                    '<g class="band" data-table="band" role="button" tabindex="0" aria-label="Band-Tisch">' +
-                    '<rect class="bandseat" x="18" y="244" width="18" height="20" rx="6"/>' +
-                    '<rect class="bandseat" x="72" y="244" width="18" height="20" rx="6"/>' +
-                    '<rect class="bandseat" x="18" y="296" width="18" height="20" rx="6"/>' +
-                    '<rect class="bandseat" x="72" y="296" width="18" height="20" rx="6"/>' +
-                    '<rect class="bandbody" x="22" y="266" width="64" height="28" rx="9"/>' +
-                    '<text class="bandlabel" x="54" y="281">♪ Band</text>' +
+                    '<g class="band" aria-label="Band-Bühne">' +
+                    '<circle class="bandstage" cx="54" cy="280" r="36"/>' +
+                    '<text class="bandlabel" x="54" y="280">♪ Bühne</text>' +
                     "</g>";
 
                 // Brautpaar-Tisch (Zentrum 400/280)
@@ -2350,12 +2331,11 @@
             }
 
             function allTables() {
-                return TABLES.concat([CENTER_TABLE, BAND_TABLE]);
+                return TABLES.concat([CENTER_TABLE]);
             }
 
             function cardTitle(t) {
                 if (t.id === "brautpaar") return "♥ Brautpaar-Tisch";
-                if (t.id === "band") return "♪ Band";
                 return "Tisch " + t.id;
             }
 
@@ -2383,8 +2363,7 @@
                     const real = t.guests.filter((g) => g && g !== "?").length;
                     const cls =
                         "tcard" +
-                        (t.id === "brautpaar" ? " couple" : "") +
-                        (t.id === "band" ? " band" : "");
+                        (t.id === "brautpaar" ? " couple" : "");
                     html +=
                         '<div class="' +
                         cls +
